@@ -23,7 +23,7 @@ public class MemberController {
 
     @PostMapping
     public MemberDto register(@RequestBody RegisterMemberCommand command) {
-        var member = memberWriteService.register(command);
+        var member = memberWriteService.create(command);
         return memberReadService.toDto(member);
     }
 
@@ -32,5 +32,15 @@ public class MemberController {
         return memberReadService.getMember(id);
     }
 
+    @PostMapping("/{id}/name")
+    public MemberDto changeNickname(@PathVariable Long id, @RequestBody String nickname) {
+        memberWriteService.changeNickname(id, nickname);
+        return memberReadService.getMember(id);
+    }
+
+    @GetMapping("/{memberId}/nickname-histories")
+    public List<MemberNicknameHistoryDto> getNicknameHistories(@PathVariable Long memberId) {
+        return memberReadService.getNicknameHistories(memberId);
+    }
 }
 
